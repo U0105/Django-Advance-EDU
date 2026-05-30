@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.base import TemplateView, RedirectView
 from blog.models import Post
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView, FormView
+from blog.forms import Catform
 
 # Create your views here.
 
@@ -11,7 +12,7 @@ class IndexView(TemplateView):
         class based index view to handel a simple
         render page with GET requests.
     '''
-    template_name = "index.html"
+    template_name = "blog/index.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -41,3 +42,16 @@ class CBListview(ListView):
     # def get_queryset(self):
         # posts = Post.objects.filter(status=True)
         # return posts
+
+class CBDetailview(DetailView):
+    model = Post
+
+class CBFormview(FormView):
+    template_name = 'create_cat.html'
+    form_class = Catform
+    success_url = '/blog/posts/'
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
