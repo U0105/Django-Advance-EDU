@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.base import TemplateView, RedirectView
 from blog.models import Post
-from django.views.generic import ListView, DetailView, FormView
+from django.views.generic import ListView, DetailView, FormView, CreateView
 from blog.forms import Catform
 
 # Create your views here.
@@ -55,3 +55,11 @@ class CBFormview(FormView):
         form.save()
         return super().form_valid(form)
 
+class Cpostcreate(CreateView):
+    model = Post
+    fields = ['title', 'content','status', 'category', 'published_date']
+    success_url = '/blog/posts'
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+    
