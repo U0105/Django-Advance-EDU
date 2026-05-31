@@ -4,6 +4,7 @@ from blog.models import Post
 from django.views.generic import (ListView, DetailView, FormView, CreateView,
                                     UpdateView, DeleteView)
 from blog.forms import Catform, Postform
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 # Create your views here.
 
@@ -64,11 +65,12 @@ class Cpostcreate(CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
-class Posteditview(UpdateView):
+class Posteditview(PermissionRequiredMixin,UpdateView):
     model = Post
     form_class = Postform
     success_url = '/blog/posts'
+    permission_required = 'blog.change_post'
 
-class Postdeleteview(DeleteView):
+class Postdeleteview(LoginRequiredMixin,DeleteView):
     model = Post
     success_url = "/blog/posts/"
