@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from .serializers import Postserializer
-from blog.models import Post
+from .serializers import Postserializer, CategorySerializer
+from blog.models import Post, category
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -9,6 +9,8 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+
+from rest_framework import viewsets
 
 '''
 @api_view(["GET","POST"])
@@ -53,6 +55,7 @@ class PostList(APIView):
         return Response(serialized.data)
 """
 
+"""
 class PostList(ListCreateAPIView):
     '''
     this is the class for geting list of posts and making
@@ -61,6 +64,7 @@ class PostList(ListCreateAPIView):
     queryset = Post.objects.filter(status=True)
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = Postserializer
+"""
 
 '''
 @api_view(["GET","PUT","DELETE"])
@@ -111,6 +115,7 @@ class PostDetail(APIView):
         return Response({" detail": "Post Deleted Successfully."},status=status.HTTP_204_NO_CONTENT)
 """    
 
+"""
 class PostDetail(RetrieveUpdateDestroyAPIView):
     '''
     geting details of a post and updating it and removing it.
@@ -120,3 +125,22 @@ class PostDetail(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = Postserializer
     lookup_field = 'id'
+"""
+
+class PostModelViewSet(viewsets.ModelViewSet):
+    """
+    A simple ModelViewSet for listing or retrieving posts.
+    """
+     
+    queryset = Post.objects.filter(status=True)
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = Postserializer
+
+class CategoryModelSet(viewsets.ModelViewSet):
+    """
+    A simple ModelViewSet for listing or retrieving categorys.
+    """
+
+    queryset = category.objects.all()
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = CategorySerializer
