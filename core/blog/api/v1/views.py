@@ -12,6 +12,8 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 
 from rest_framework import viewsets
 
+from rest_framework.decorators import action
+
 '''
 @api_view(["GET","POST"])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -131,7 +133,10 @@ class PostModelViewSet(viewsets.ModelViewSet):
     """
     A simple ModelViewSet for listing or retrieving posts.
     """
-     
+    @action(methods=["get"],detail=False)
+    def get_ok(self,request):
+        return Response({"detail": "ok"})
+
     queryset = Post.objects.filter(status=True)
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = Postserializer
