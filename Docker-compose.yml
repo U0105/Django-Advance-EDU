@@ -2,7 +2,7 @@ version: '3.9'
 services:
   backend:
     build: .
-    container_name: backend
+    container_name: backend-maktab
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./core:/app
@@ -11,4 +11,4 @@ services:
     environment:
       - SECRET_KEY="test"  #"django-insecure-=xh7v=fwt#@f08o*=rm=463*6(z2j!c+i(y$ziogj#0g@&%kbg"
       - DEBUG=True
-      - ALLOWED_HOSTS=localhost, 127.0.0.1
+      - ALLOWED_HOSTS=localhost, 127.0.0.1, 192.168.1.60

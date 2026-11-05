@@ -14,6 +14,8 @@ from rest_framework import viewsets
 
 from rest_framework.decorators import action
 
+from .permissions import IsownerorReadonly
+
 '''
 @api_view(["GET","POST"])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -138,7 +140,7 @@ class PostModelViewSet(viewsets.ModelViewSet):
         return Response({"detail": "ok"})
 
     queryset = Post.objects.filter(status=True)
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly,IsownerorReadonly]
     serializer_class = Postserializer
 
 class CategoryModelSet(viewsets.ModelViewSet):
