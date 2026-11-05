@@ -16,6 +16,10 @@ from rest_framework.decorators import action
 
 from .permissions import IsownerorReadonly
 
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
+from .paginations import DefaultPagination
+
 '''
 @api_view(["GET","POST"])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -142,7 +146,12 @@ class PostModelViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.filter(status=True)
     permission_classes = [IsAuthenticatedOrReadOnly,IsownerorReadonly]
     serializer_class = Postserializer
-
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fieleds = ['category', 'author', 'status']
+    search_fields = ['title', 'content']
+    orderring_fields = ['published_date']
+    pagination_class = DefaultPagination
+    
 class CategoryModelSet(viewsets.ModelViewSet):
     """
     A simple ModelViewSet for listing or retrieving categorys.
